@@ -24,7 +24,7 @@ class Attachment:
     # ── core fields ──────────────────────────────────────────────────────
     id: UUID
     message_id: UUID
-    type: AttachmentType
+    type_: AttachmentType
     file_name: str                            # name without path
     url: PurePosixPath                        # path/URL in object storage
     size: int                                 # bytes
@@ -47,17 +47,17 @@ class Attachment:
 
     # — helper predicates ——————————————————————————————
     def is_image(self) -> bool:
-        return self.type is AttachmentType.IMAGE
+        return self.type_ is AttachmentType.IMAGE
 
     def is_audio(self) -> bool:
-        return self.type is AttachmentType.AUDIO
+        return self.type_ is AttachmentType.AUDIO
 
     def is_video(self) -> bool:
-        return self.type is AttachmentType.VIDEO
+        return self.type_ is AttachmentType.VIDEO
 
     def is_previewable(self) -> bool:
         """True if the chat UI can show an inline preview."""
-        return self.type in {AttachmentType.IMAGE, AttachmentType.VIDEO}
+        return self.type_ in {AttachmentType.IMAGE, AttachmentType.VIDEO}
 
     def validate_size(self, max_bytes: int = _MAX_SIZE_BYTES) -> None:
         """Ensure the file does not exceed the configured limit."""
@@ -87,7 +87,7 @@ class Attachment:
         att = Attachment(
             id=uuid4(),
             message_id=message_id,
-            type=type_,
+            type_=type_,
             file_name=file_name,
             url=PurePosixPath("/upload/pending"),  # temp placeholder
             size=size,
